@@ -2,9 +2,9 @@ import socket
 import sys
 
 class Server:
-    def __init__(self):
+    def __init__(self, address, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.address = ('localhost', 4000)
+        self.address = (address, port)
         self.cache = {}
 
     def handle_GET(self, key):
@@ -17,9 +17,9 @@ class Server:
     def handle_PUT(self, data):
         try:
             key = data.split(':')[0]
-            value = data.split(':')[1:]
+            value = ':'.join(data.split(':')[1:])
         except ValueError:
-            return "Key:Value not found in data"
+            return f"Invalid data {value}"
         print(f"Handling PUT request for key: {key, value}")
         if not key:
             return "No key found"
@@ -30,8 +30,8 @@ class Server:
     def handle_connection(self, conn):
         while True:
             data = conn.recv(1024).decode("utf-8").strip()
-            print(f"Received {data}")
             if data:
+                print(f"Received {data}")
                 if data[0:3].upper() == "GET" :
                     ret = self.handle_GET(data[3:])
                     conn.send(ret.encode("utf-8"))
@@ -40,11 +40,11 @@ class Server:
                     conn.send(f"{ret}\n".encode('utf-8'))
             else:
                 print("No data received\n")
-                break
 
     def start(self):
         self.sock.bind(self.address)
         self.sock.listen(5)
+        print(f"Server listening on {self.address[0]}:{self.address[1]}...")
         while True:
             conn, addr = self.sock.accept()
             try:
