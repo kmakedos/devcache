@@ -4,7 +4,7 @@ import os
 
 def main():
     address = os.getenv("DEVCACHE_HOST", "localhost")
-    port = os.getenv("DEVACHE_PORT", 8001)
+    port = os.getenv("DEVCACHE_PORT", 8001)
     print(f"Arguments found from env: {address} {port}")
     s = server.Server(address, int(port))
     s.start()
