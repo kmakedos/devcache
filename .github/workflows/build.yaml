@@ -26,4 +26,4 @@ jobs:
       with:
         file: Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/brokenleg:${{ env.REPO_NAME }}-${{ env.VERSION }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/devcache:${{ env.REPO_NAME }}-${{ env.VERSION }}
