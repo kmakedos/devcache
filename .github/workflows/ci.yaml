@@ -36,11 +36,11 @@ jobs:
           node-version: 20.8.1
       - name: Generate release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: npx semantic-release
       - name: Update major tag
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
           git tag -d v4
           git push --delete origin v4
