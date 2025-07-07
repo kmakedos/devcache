@@ -33,11 +33,4 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Set output
-        id: vars
-        run: echo "tag=${GITHUB_REF#refs/*/}" >> GITHUB_TAGS_OUTPUT
-      - name: Check output
-        env: 
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: |
-          echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.tag }}
+        run: echo "Ref: $GITHUB_REF_NAME"
