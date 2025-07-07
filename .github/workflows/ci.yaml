@@ -27,18 +27,12 @@ jobs:
       - run: |
           echo "All matrix jobs have completed successfully!"
   release:
-    if: github.event_name == 'push'
+    if: startsWith(github.ref ,'refs/tags/')
     needs: ci-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Get Tag
-        uses: devops-actions/action-get-tag@v1.0.3
-        id: tag
-        with:
-          strip_v: true
-          default: v0.0.1
       - name: Check ref
         run: |
-          echo "tag_name: ${{ steps.tag.outputs.tag }}"
+          echo "tag_name: ${{ github.ref }}"
     
