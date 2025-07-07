@@ -40,5 +40,5 @@ jobs:
           default: v0.0.1
       - name: Check ref
         run: |
-          echo "tag_name: ${{ github.ref }}"
+          echo "tag_name: ${{ steps.tag.outputs.tag }}"
     
