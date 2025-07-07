@@ -32,5 +32,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Set output
-        run: echo "Ref: $GITHUB_REF_NAME"
+      - name: Get Tag
+        uses: devops-actions/action-get-tag@v1.0.3
+        id: tag
+        with:
+          strip_v: true
+          default: v0.0.0
+      - name: Use tag
+        run: echo ${{ steps.tag.outputs.tag }}
+
