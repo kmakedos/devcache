@@ -38,4 +38,4 @@ jobs:
           RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
           echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.tag"
+          echo ${{ steps.vars.outputs.tag }}
