@@ -37,7 +37,20 @@ jobs:
         id: tag
         with:
           strip_v: true
-          default: v0.0.0
-      - name: Use tag
-        run: echo ${{ steps.tag.outputs.tag }}
+          default: v0.0.1
+      - name: Create release
+        id: create_release
+        uses: comnoco/create-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this release
+            - Not much
+          draft: false
+          prerelease: false
+      
 
+    
