@@ -34,10 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/*/}" >> GITHUB_ENV
       - name: Check ref
         run: |
-          echo "$RELEASE_VERSION"
-          echo "tag_name: ${{ env.RELEASE_VERSION }}"
+          echo "tag_name: ${{ github.ref_name }}"
     
