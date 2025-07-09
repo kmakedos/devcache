@@ -25,7 +25,7 @@ class Server:
             return "No key found"
         else:
             self.cache[key] = value
-            return "OK
+            return "OK"
     def handle_connection(self, conn):
         while True:
             data = conn.recv(1024).decode("utf-8").strip()
