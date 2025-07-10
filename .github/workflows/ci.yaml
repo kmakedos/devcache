@@ -34,7 +34,7 @@ jobs:
           build-args: |
             DEVCACHE_BASE_IMAGE=python:${{ matrix.python-version }}-alpine
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.python-version }}-alpine
           labels: ${{ steps.meta.outputs.labels }}
   release:
     if: startsWith(github.ref ,'refs/tags/')
