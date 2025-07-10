@@ -30,8 +30,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          build-args:
-            DEVCACHE_BASE_IMAGE: alpine-${{ matrix.python-version }}
+          build-args: |
+            DEVCACHE_BASE_IMAGE=python:alpine-${{ matrix.python-version }}
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.python-version }}
