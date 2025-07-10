@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           build-args:
-          - "DEVCACHE_BASE_IMAGE": alpine-${{ matrix.python-version }}
+            DEVCACHE_BASE_IMAGE: alpine-${{ matrix.python-version }}
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.python-version }}
