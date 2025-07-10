@@ -30,9 +30,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          build-args:
+          - "DEVCACHE_BASE_IMAGE": alpine-${{ matrix.python-version }}
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/devcache:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.python-version }}
           labels: ${{ steps.meta.outputs.labels }}
   release:
     if: startsWith(github.ref ,'refs/tags/')
