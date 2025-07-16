@@ -12,28 +12,39 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.13"]
-        #python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-        os: [ubuntu-22.04]
-        #os: [ubuntu-22.04, macos-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+        os: [ubuntu-22.04, ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Set up Docker BuildX
-        uses: docker/setup-buildx-action@v2
-      - name: Build Docker Image
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker image
+        id: push
         uses: docker/build-push-action@v2
         with:
-          file: Dockerfile
-          push: false
-          tags: devcache:${{ github.ref_name }}
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            DEVCACHE_BASE_IMAGE=python:${{ matrix.python-version }}-alpine
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/devcache:${{ matrix.python-version }}-alpine-dev
+          labels: ${{ steps.meta.outputs.labels }}
   release:
     if: startsWith(github.ref ,'refs/tags/')
     needs: [build]
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.12"]
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Log in to Docker Hub
@@ -46,7 +57,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          build-args: |
+            DEVCACHE_BASE_IMAGE=python:${{ matrix.python-version }}-alpine
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/devcache:${{ github.ref_name }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/devcache:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/devcache:${{ matrix.python-version }}-alpine
           labels: ${{ steps.meta.outputs.labels }}

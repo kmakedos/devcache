@@ -3,3 +3,8 @@ services:
     build:
       context: .
     image: goliath:5000/devcache:latest
+    ports:
+      - 8080:8001
+    environment:
+      DEVCACHE_PORT: 8001
+      DEVCACHE_HOST: "0.0.0.0"
